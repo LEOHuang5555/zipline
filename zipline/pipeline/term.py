@@ -180,11 +180,16 @@ class Term(with_metaclass(ABCMeta, object)):
             Raised if any parameter values are not passed or not hashable.
         """
         params = cls.params
+        # If the type of paramaters can not use for mapping
+        # Then change the type to the way that can be mapping (ex.dictionary)
         if not isinstance(params, Mapping):
             params = {k: None for k in params}
+        # Xreate a empty to store the results of the loop
         param_values = []
         for key, default_value in params.items():
             try:
+                # If the key not in kwargs, default_value will pass to the `value`
+                # Otherwise, pass the corresponding value of the specified key to the `value`
                 value = kwargs.pop(key, default_value)
                 if value is None and default_value is not None:
                     raise KeyError(key)
